@@ -12,3 +12,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.jumbotron {
+  color: #ffffff;
+  background: url(/jumbo-background.png) center no-repeat;
+}
