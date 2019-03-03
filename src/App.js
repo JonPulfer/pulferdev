@@ -106,25 +106,51 @@ class LoadTfLTubeLineStatus extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('https://api.tfl.gov.uk/Line/victoria%2Ccircle/Status?detail=true')
+    axios.get('https://api.tfl.gov.uk/Line/circle%2Chammersmith-city%2Cmetropolitan%2Cvictoria/Status?detail=true')
       .then(json => this.setState({
-        victoriaLineStatus: json.data[1].lineStatuses[0].statusSeverityDescription,
-        circleLineStatus: json.data[0].lineStatuses[0].statusSeverityDescription
+        lineStatus: json.data
       }))
       .catch(error => alert(error))
   }
 
   render() {
     return (
-      <Card>
+      <ListGroup>
         <Card.Header>Tube line Status</Card.Header>
-        <ListGroup variant="flush">
-          <ListGroup.Item>Victoria Line: {this.state.victoriaLineStatus}</ListGroup.Item>
-          <ListGroup.Item>Circle Line: {this.state.circleLineStatus}</ListGroup.Item>
-        </ListGroup>
-      </Card>
+        <ul><TfLLineList lines={this.state.lineStatus} /></ul>
+      </ListGroup>
     )
   }
+}
+
+function TfLLineList(props) {
+  console.log(props);
+  const lines = props.lines;
+  const lineItems = lines.map((line) =>
+    <Card key={line.id}>
+      <Card.Header>{line.name}</Card.Header>
+      <TfLLineStatusList lineStatuses={line.lineStatuses} />
+    </Card>
+  );
+
+  return (
+    <ul>{lineItems}</ul>
+  );
+}
+
+function TfLLineStatusList(props) {
+  console.log(props);
+  const lines = props.lineStatuses;
+  const lineStatusItems = lines.map((status) =>
+    <Card key={status.statusSeverity}>
+      <Card.Header>{status.statusSeverityDescription}</Card.Header>
+      {status.reason}
+    </Card>
+  );
+
+  return (
+    <ul>{lineStatusItems}</ul>
+  );
 }
 
 class About extends Component {
