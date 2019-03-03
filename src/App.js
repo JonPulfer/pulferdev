@@ -34,6 +34,9 @@ class Index extends Component {
             Here be dragons...
           </p>
         </Jumbotron>
+        <p>
+          Home to things I'm currently messing around with.
+        </p>
       </div>
     );
   }
@@ -78,17 +81,19 @@ class TravelInfo extends Component {
         </Jumbotron>
         <Container>
           <Row>
-          <Col>
-            <LoadTfLTubeLineStatus/>
-          </Col>
-          <Col>
-            <Card>
-              <Card.Header>Anglia Overground Rail</Card.Header>
-              <a className="twitter-timeline" data-width="220" data-height="400"
-                 href="https://twitter.com/greateranglia?ref_src=twsrc%5Etfw">Tweets by greateranglia</a>
-              <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
-            </Card>
-          </Col>
+            <Col>
+              <LoadTfLTubeLineStatus/>
+            </Col>
+            <Col>
+              <Card>
+                <Card.Header>Anglia Overground Rail</Card.Header>
+                <Card.Body>
+                  <a className="twitter-timeline" data-width="220" data-height="400"
+                     href="https://twitter.com/greateranglia?ref_src=twsrc%5Etfw">Tweets by greateranglia</a>
+                  <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
+                </Card.Body>
+              </Card>
+            </Col>
           </Row>
         </Container>
       </div>
@@ -116,40 +121,46 @@ class LoadTfLTubeLineStatus extends React.Component {
   render() {
     return (
       <ListGroup>
-        <Card.Header>Tube line Status</Card.Header>
-        <ul><TfLLineList lines={this.state.lineStatus} /></ul>
+        <Card>
+          <Card.Header>Tube line Status</Card.Header>
+          <Card.Body>
+            <ListGroup><TfLLineList lines={this.state.lineStatus}/></ListGroup>
+          </Card.Body>
+
+        </Card>
       </ListGroup>
     )
   }
 }
 
 function TfLLineList(props) {
-  console.log(props);
   const lines = props.lines;
   const lineItems = lines.map((line) =>
     <Card key={line.id}>
       <Card.Header>{line.name}</Card.Header>
-      <TfLLineStatusList lineStatuses={line.lineStatuses} />
+      <Card.Body>
+        <TfLLineStatusList lineStatuses={line.lineStatuses}/>
+      </Card.Body>
     </Card>
   );
 
   return (
-    <ul>{lineItems}</ul>
+    <ListGroup>{lineItems}</ListGroup>
   );
 }
 
 function TfLLineStatusList(props) {
-  console.log(props);
   const lines = props.lineStatuses;
-  const lineStatusItems = lines.map((status) =>
-    <Card key={status.statusSeverity}>
-      <Card.Header>{status.statusSeverityDescription}</Card.Header>
-      {status.reason}
-    </Card>
+  const lineStatusItems = lines.map((status, index) =>
+    <div key={index}>
+      <h4>{status.statusSeverityDescription}</h4>
+      <p>{status.reason}</p>
+      <hr/>
+    </div>
   );
 
   return (
-    <ul>{lineStatusItems}</ul>
+    <ListGroup>{lineStatusItems}</ListGroup>
   );
 }
 
