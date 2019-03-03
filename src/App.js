@@ -7,6 +7,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import Image from 'react-bootstrap/Image';
 import './App.css';
 import axios from 'axios';
 import {BrowserRouter as Router, Route} from "react-router-dom";
@@ -23,9 +24,7 @@ class Index extends Component {
               <Nav.Link href="/travel/">Travel Info</Nav.Link>
               <Nav.Link href="/about">About</Nav.Link>
             </Nav>
-            <Nav>
-              <Nav.Link href="https://twitter.com/jonathanpulfer">@jonathanpulfer</Nav.Link>
-            </Nav>
+            <SocialNav/>
           </Navbar.Collapse>
         </Navbar>
         <Jumbotron fluid>
@@ -54,6 +53,16 @@ function AppRouter() {
   );
 }
 
+function SocialNav() {
+  return (
+    <Nav>
+      <Nav.Link href="https://github.com/jonpulfer"><Image src="/Github-Mark-32px.png"/></Nav.Link>
+      <Nav.Link href="https://twitter.com/jonathanpulfer"><Image src="/Twitter_logo.png"/></Nav.Link>
+    </Nav>
+
+  );
+}
+
 export default AppRouter;
 
 class TravelInfo extends Component {
@@ -68,9 +77,7 @@ class TravelInfo extends Component {
               <Nav.Link href="/travel" active>Travel Info</Nav.Link>
               <Nav.Link href="/about">About</Nav.Link>
             </Nav>
-            <Nav>
-              <Nav.Link href="https://twitter.com/jonathanpulfer">@jonathanpulfer</Nav.Link>
-            </Nav>
+            <SocialNav/>
           </Navbar.Collapse>
         </Navbar>
         <Jumbotron fluid>
@@ -176,9 +183,7 @@ class About extends Component {
               <Nav.Link href="/travel">Travel Info</Nav.Link>
               <Nav.Link href="/about" active>About</Nav.Link>
             </Nav>
-            <Nav>
-              <Nav.Link href="https://twitter.com/jonathanpulfer">@jonathanpulfer</Nav.Link>
-            </Nav>
+            <SocialNav/>
           </Navbar.Collapse>
         </Navbar>
         <Jumbotron fluid>
