@@ -7,7 +7,6 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Image from 'react-bootstrap/Image';
 import './App.css';
 import axios from 'axios';
 import {BrowserRouter as Router, Route} from "react-router-dom";
@@ -56,8 +55,9 @@ function AppRouter() {
 function SocialNav() {
   return (
     <Nav>
-      <Nav.Link href="https://github.com/jonpulfer"><Image src="/Github-Mark-32px.png"/></Nav.Link>
-      <Nav.Link href="https://twitter.com/jonathanpulfer"><Image src="/Twitter_logo.png"/></Nav.Link>
+      <Nav.Link href="https://keybase.io/jonp">Keybase</Nav.Link>
+      <Nav.Link href="https://github.com/jonpulfer">Github</Nav.Link>
+      <Nav.Link href="https://twitter.com/jonathanpulfer">@jonathanpulfer</Nav.Link>
     </Nav>
 
   );
@@ -100,6 +100,7 @@ class TravelInfo extends Component {
                   <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
                 </Card.Body>
               </Card>
+              <LoadTfLLivStrStationStatus/>
             </Col>
           </Row>
         </Container>
@@ -169,6 +170,39 @@ function TfLLineStatusList(props) {
   return (
     <ListGroup>{lineStatusItems}</ListGroup>
   );
+}
+
+class LoadTfLLivStrStationStatus extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      disruptionItem: []
+    }
+  }
+
+  componentDidMount() {
+    axios.get('https://api.tfl.gov.uk/StopPoint/HUBLST/Disruption?getFamily=false&includeRouteBlockedStops=false')
+      .then(json => this.setState({
+        disruptionItem: json.data
+      }))
+      .catch(error => alert(error))
+  }
+
+  render() {
+    return (
+      <Card>
+        <Card.Header>Liverpool Street disruptions</Card.Header>
+        <Card.Body>
+          <ListGroup>
+            {this.state.disruptionItem.fromDate}<br/>
+            {this.state.disruptionItem.toDate}<br/>
+            <p>{this.state.disruptionItem.description}</p>
+          </ListGroup>
+        </Card.Body>
+      </Card>
+    )
+  }
 }
 
 class About extends Component {
