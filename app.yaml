@@ -13,4 +13,12 @@
 # [START app_yaml]
 env: flex
 runtime: nodejs
+
+# No need to have loads of instances since this will be behind Cloudflare cache.
+automatic_scaling:
+  min_num_instances: 1
+  max_num_instances: 5
+  cpu_utilization:
+    target_utilization: 0.5
+network: {}
 # [END app_yaml]
