@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
 import Jumbotron from 'react-bootstrap/Jumbotron';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
 import Card from 'react-bootstrap/Card';
+import CardColumns from 'react-bootstrap/CardColumns';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Image from 'react-bootstrap/Image';
+import SiteNav from './Navigation';
 import './App.css';
 import axios from 'axios';
 import {BrowserRouter as Router, Route} from "react-router-dom";
@@ -18,18 +18,7 @@ class Index extends Component {
   render() {
     return (
       <div className="App">
-        <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="/">Jonathan Pulfer</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link href="/about">About</Nav.Link>
-              <Nav.Link href="/afrita">Afrita</Nav.Link>
-              <Nav.Link href="/travel">Travel Info</Nav.Link>
-            </Nav>
-            <SocialNav/>
-          </Navbar.Collapse>
-        </Navbar>
+        <SiteNav pageName="Index"/>
         <Jumbotron fluid>
           <h1>Hello, world!</h1>
           <p>
@@ -57,39 +46,40 @@ function AppRouter() {
   );
 }
 
-// These are my common social links used in the nav bar.
-function SocialNav() {
-  return (
-    <Nav>
-      <Nav.Link href="https://keybase.io/jonp">Keybase</Nav.Link>
-      <Nav.Link href="https://github.com/jonpulfer">Github</Nav.Link>
-      <Nav.Link href="https://www.linkedin.com/in/jon-pulfer-3b407b2/">LinkedIn</Nav.Link>
-      <Nav.Link href="https://twitter.com/jonathanpulfer">@jonathanpulfer</Nav.Link>
-    </Nav>
-
-  );
-}
-
 export default AppRouter;
+
+function TwitterScript() {
+  const scriptDetails = "window.twttr = function (d, s, id) {\n" +
+    "      var js, fjs = d.getElementsByTagName(s)[0],\n" +
+    "      t = window.twttr || {};\n" +
+    "      if (d.getElementById(id)) return t;\n" +
+    "      js = d.createElement(s);\n" +
+    "      js.id = id;\n" +
+    "      js.src = \"https://platform.twitter.com/widgets.js\";\n" +
+    "      fjs.parentNode.insertBefore(js, fjs);\n" +
+    "\n" +
+    "      t._e = [];\n" +
+    "      t.ready = function (f) {\n" +
+    "      t._e.push(f);\n" +
+    "    };\n" +
+    "      return t;\n" +
+    "    }(document, \"script\", \"twitter-wjs\")";
+
+  ReactDOM.render(scriptDetails, document.getElementById('twitterScript'))
+}
 
 // /travel page that loads content from APIs and aggregates the information that is relevant for my common journeys
 // like my commute.
 class TravelInfo extends Component {
+
+  componentDidMount() {
+    TwitterScript();
+  }
+
   render() {
     return (
       <div className="App">
-        <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="/">Jonathan Pulfer</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link href="/about">About</Nav.Link>
-              <Nav.Link href="/afrita">Afrita</Nav.Link>
-              <Nav.Link href="/travel" active>Travel Info</Nav.Link>
-            </Nav>
-            <SocialNav/>
-          </Navbar.Collapse>
-        </Navbar>
+        <SiteNav pageName="Travel"/>
         <Jumbotron fluid>
           <h1>Hello, world!</h1>
           <p>
@@ -160,7 +150,6 @@ class LoadTfLTubeLineStatus extends React.Component {
 
 // For the provided list of TfL lines, render as a list the cards containing the details.
 function TfLLineList(props) {
-  console.log(process.env.API_KEY);
   const lines = props.lines;
   const lineItems = lines.map((line) =>
     <Card key={line.id}>
@@ -237,50 +226,165 @@ class About extends Component {
   render() {
     return (
       <div className="App">
-        <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="/">Jonathan Pulfer</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link href="/about" active>About</Nav.Link>
-              <Nav.Link href="/afrita">Afrita</Nav.Link>
-              <Nav.Link href="/travel">Travel Info</Nav.Link>
-            </Nav>
-            <SocialNav/>
-          </Navbar.Collapse>
-        </Navbar>
+        <SiteNav pageName="About"/>
         <Jumbotron fluid>
           <h1>Hello, world!</h1>
           <p>
             Here be dragons...
           </p>
         </Jumbotron>
-        <Col>
-          <div className="narrow">
-            <p>
-              I'm a programmer (predominantly Go and Rust) living in Ipswich and currently commuting into London.
-              Although this does mean I travel more than some, it enables me to work with some really interesting
-              people using technology that challenges me. I enjoy helping people and fixing things, which provides
-              me with plenty to learn and helps keep me energised.
-            </p>
-            <p>
-              I'm always happy to hear about new opportunities and welcome connections via one of the social
-              accounts in the links at the top.
-            </p>
-            <p>
-              When I'm not working, the main draw on my time is my sailing vessel, Afrita.
-            </p>
-            <p>Other hobbies I enjoy are: -
-              <ListGroup>
-                <li>Painting in Acrylics</li>
-                <li>Knitting</li>
-                <li>Sewing and making clothes</li>
-                <li>Music</li>
-                <li>Playing Guitar</li>
-              </ListGroup>
-            </p>
-          </div>
-        </Col>
+        <Container>
+          <Row>
+            <Col>
+              <div className="narrow">
+                <p>
+                  I'm a programmer (predominantly Go and Rust) living in Ipswich and currently commuting into London.
+                  Although this does mean I travel more than some, it enables me to work with some really interesting
+                  people using technology that challenges me. I enjoy helping people and fixing things, which provides
+                  me with plenty to learn and helps keep me energised.
+                </p>
+                <p>
+                  I'm always happy to hear about new opportunities and welcome connections via one of the social
+                  accounts in the links at the top.
+                </p>
+                <p>
+                  When I'm not working, the main draw on my time is <a href="/afrita">Afrita</a>.
+                </p>
+                <p>Other sports/hobbies I enjoy are: -</p>
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <CardColumns>
+              <Card>
+                <Card.Header>
+                  Painting
+                </Card.Header>
+                <Card.Body>
+                  <p>
+                    I've never formally studied any art disciplines but I really enjoy trying out different things,
+                    learning
+                    as I go. A friend of mine recently laughed when viewing my first self portrait saying that it
+                    reminded him of the faces on the Thomas the tank engine trains. Not quite what I was aiming for but
+                    at least it brought him some laughter for a while.
+                  </p>
+                  <p>
+                    I've settled on using acrylics as my medium as I really like the flexibility of being able to paint
+                    on
+                    any (primed) surface and work fast. As always, getting something on the surface to start a painting
+                    is
+                    pretty daunting but I counter that by blocking out with a ground wash before starting to put other
+                    marks
+                    down.
+                  </p>
+                </Card.Body>
+              </Card>
+              <Card>
+                <Card.Img variant="top" src="/remote_road.png"/>
+                <Card.Header>
+                  Remote road
+                </Card.Header>
+                <Card.Body>
+                  <p>
+                    This was inspired by a number of remote roads I drove through on trips to Scotland.
+                  </p>
+                </Card.Body>
+              </Card>
+              <Card style={{width: '18rem'}}>
+                <Card.Img variant="top" src="/self_portrait.png"/>
+                <Card.Header>
+                  First self portrait
+                </Card.Header>
+                <Card.Body>
+                  <p>
+                    I wanted to try and see if I could capture a realistic expression and hopefully create something
+                    that
+                    was recognisable as me.
+                  </p>
+                </Card.Body>
+              </Card>
+              <Card>
+                <Card.Img variant="top" src="/guitar.png"/>
+                <Card.Header>
+                  Guitar
+                </Card.Header>
+                <Card.Body>
+                  <p>
+                    From an early age I attempted to play guitars. Both my brother and myself eventually got to spend
+                    some
+                    time taking lessons from an excellent teacher/session musician. Competition between my brother and I
+                    always motivated us to learn more until inevitably his more creative nature elevated his abilities
+                    beyond
+                    my reach.
+                  </p>
+                  <p>
+                    I've owned a few guitars over the years. Like most hobbies, buying a new guitar is quite an
+                    addictive
+                    thing. I have worked very hard to resist that in recent years and this is currently the only guitar
+                    I
+                    have left.
+                  </p>
+                </Card.Body>
+              </Card>
+              <Card>
+                <Card.Header>
+                  Music
+                </Card.Header>
+                <Card.Body>
+                  <p>
+                    Following my interest in playing guitar, I have always enjoyed listening to music. I was lucky that
+                    various people introduced me to different styles and my taste now is very varied. My grandfather
+                    particularly instilled an appreciation for classical piano by picking out particularly beautiful
+                    pieces to captivate me.
+                  </p>
+                  <p>
+                    I also enjoy experiencing live performances when I remember to organise the tickets!
+                  </p>
+                </Card.Body>
+              </Card>
+              <Card>
+                <Card.Header>
+                  Running
+                </Card.Header>
+                <Card.Body>
+                  <p>
+                    I enjoy most sports and actively visit the gym for general fitness. More recently I have increased
+                    the amount of running I do with the aim of doing half marathons.
+                  </p>
+                </Card.Body>
+              </Card>
+              <Card style={{width: '18rem'}}>
+                <Card.Img variant="top" src="/hat.png"/>
+                <Card.Header>
+                  Knitting
+                </Card.Header>
+                <Card.Body>
+                  <p>
+                    I enjoy knitting as I find it relaxes me and allows my mind to be quiet for a time while I focus on
+                    the pattern and work with my hands. This hat was the first project that I actually managed to
+                    complete
+                    and as an extra bonus it mostly fits over my head!
+                  </p>
+                </Card.Body>
+              </Card>
+              <Card>
+                <Card.Header>
+                  Sewing and making clothes
+                </Card.Header>
+                <Card.Body>
+                  <p>
+                    Among the many talents my grandmother has, dress design has been a passion and career for her. She
+                    took the time to nurture my interest and I have learned a great deal from her skill and experience.
+                  </p>
+                  <p>
+                    I enjoy working in traditional ways and own a Singer 201 treadle which I use as my main machine when
+                    making garments.
+                  </p>
+                </Card.Body>
+              </Card>
+            </CardColumns>
+          </Row>
+        </Container>
       </div>
     );
   }
@@ -290,18 +394,7 @@ class Afrita extends Component {
   render() {
     return (
       <div className="App">
-        <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="/">Jonathan Pulfer</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link href="/about">About</Nav.Link>
-              <Nav.Link href="/afrita" active>Afrita</Nav.Link>
-              <Nav.Link href="/travel">Travel Info</Nav.Link>
-            </Nav>
-            <SocialNav/>
-          </Navbar.Collapse>
-        </Navbar>
+        <SiteNav pageName="Afrita"/>
         <Jumbotron fluid>
           <h1>Hello, world!</h1>
           <p>
@@ -312,45 +405,39 @@ class Afrita extends Component {
           <Row>
             <Col xs lg="4">
               <Card>
+                <Card.Img variant="top" src="/Afrita.png"/>
                 <Card.Header>
-                  Specifications:
+                  Afrita
                 </Card.Header>
                 <Card.Body>
-                  <p>
-                    <a href="https://www.c032.org/">Contessa 32</a>
-                  </p>
-                  <p>
-                    <ul>
-                      <li>Length (LOA): 32 ft / 9.75m</li>
-                      <li>Width (Beam): 10ft / 3m</li>
-                      <li>Keel (Draft): 5ft 6in / 1.75m</li>
-                      <li>Year (Constructed): 1978</li>
-                    </ul>
-                  </p>
+                  <p><a href="https://www.c032.org/">Contessa 32</a></p>
+                  <ListGroup>
+                    <li>Length (LOA): 32 ft / 9.75m</li>
+                    <li>Width (Beam): 10ft / 3m</li>
+                    <li>Keel (Draft): 5ft 6in / 1.75m</li>
+                    <li>Year (Launched): 1978</li>
+                  </ListGroup>
                 </Card.Body>
               </Card>
             </Col>
             <Col>
               <Card>
-                <Card.Header>Afrita</Card.Header>
                 <Card.Body>
-                  <div class="float-left"><Image src={"/Afrita.png"} rounded/></div>
                   <p>
                     Afrita was completed in 1978 by the Jeremy Rogers boat yard in Lymington.
                     Originally she was called Sunrise and then, at some point before 1984, her name was changed. I
-                    purchased her from a lovely family in Scotland in 2016 and have been enjoying sailing her ever
+                    purchased Afrita from a lovely family in Scotland in 2016 and have been enjoying sailing her ever
                     since.
                   </p>
                   <p>
-                    Currently I berth her at Ipswich Haven marina in the historic dock in town. This means she is only a
-                    few minutes walk away from home, one of the local cafes/restaurants or shops.
+                    Currently Afrita is berthed at Ipswich Haven marina in the historic dock in town. This is only a
+                    few minutes walk from home, or to one of the local cafes/restaurants or shops.
                   </p>
                   <p>
                     I'm still building up my offshore experience with the goal to eventually cross oceans. My dream is
-                    to
-                    explore the pacific islands. Particularly Galapagos, the Atolls and Hawaii before arriving in
-                    Sydney.
-                    What I'll do if I make it that far is not in the dream at the moment but who knows!
+                    to explore the pacific islands. Particularly Galapagos, Hawaii, French Polynesia and Fiji before
+                    arriving in Sydney. What I'll do if I make it that far is not in the dream at the moment so who
+                    knows!
                   </p>
                 </Card.Body>
               </Card>
