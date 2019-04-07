@@ -416,6 +416,7 @@ class Afrita extends Component {
                     <li>Width (Beam): 10ft / 3m</li>
                     <li>Keel (Draft): 5ft 6in / 1.75m</li>
                     <li>Year (Launched): 1978</li>
+                    <li><a href="https://www.vesselfinder.com/?mmsi=235118438">Current Position</a></li>
                   </ListGroup>
                 </Card.Body>
               </Card>
